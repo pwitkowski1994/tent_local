@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lokalizacja namiotu</title>
+  <meta charset="UTF-8" />
+  <style> #map { height: 300px; width: 100%; } </style>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const endpoint = 'https://script.google.com/macros/s/AKfycbwE2NCcqG40HPrOgv_un8W5NXNrEErdZXVoZBogxKP-YMrYH5i1yoIrf2t5RbwWEZU8/exec';
+
+    fetch(endpoint)
+      .then(response => response.json())
+      .then(data => {
+        var map = L.map('map').setView([data.lat, data.lng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 18
+        }).addTo(map);
+        L.marker([data.lat, data.lng]).addTo(map);
+      })
+      .catch(() => {
+        document.body.innerHTML = 'Błąd ładowania lokalizacji';
+      });
+  </script>
+</body>
+</html>
